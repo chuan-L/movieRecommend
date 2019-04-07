@@ -1,0 +1,22 @@
+body{
+    background: url("../img/loginbg.jpg") center;
+}
+#login-form{
+    border: 1px solid #686868;
+    border-radius:1px;
+    margin-top:40px;
+    background-color: #fff;
+}
+.margin-top{
+    margin-top:2rem;
+
+}
+.margin-bottom{
+    margin-bottom:2rem;
+}
+.to-register{
+    text-align: center;
+}
+.tip{
+    margin-left: 1rem;
+}

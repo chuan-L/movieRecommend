@@ -1,0 +1,36 @@
+a{
+    text-decoration: none;
+}
+.container{
+    margin-top: 5rem;
+}
+hr{
+    margin-right: 1rem;
+}
+#dropdownMenu{
+    margin-bottom: 5rem;
+}
+.liItem{
+    padding-left: 1rem;
+    margin-top: 6px;
+    margin-bottom:6px;
+    font-size:12px;
+
+}
+.movie-item{
+    padding-top: 0;
+    padding-right: 2rem;
+    padding-bottom: 2rem;
+}
+.movie-info{
+    text-align: center;
+}
+.movie-img{
+    width:100%;
+    height: 210px;
+}
+
+
+strong{
+    color: #e09015;
+}

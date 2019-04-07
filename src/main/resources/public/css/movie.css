@@ -1,0 +1,47 @@
+main{
+    margin-top: 4rem;
+}
+#movieName{
+    font-family: SimHei;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+.imgdiv{
+    padding:0px;
+    margin:0px;
+}
+#movieImg img{
+    width: 100%;
+    height: auto;
+
+}
+.labelStar{
+    color: #686868;
+    margin:0px 0px 3px 3px;
+}
+#info{
+    font-size:14px;
+    color: #686868;
+}
+
+.briefInfo{
+
+    color:#000;
+}
+.left-border{
+    border-left: solid;
+    border-color: #e0e0e0;
+    border-left-width: 1px;
+}
+#avg_rating{
+    font-size:36px;
+
+}
+.rating_people{
+    font-size:10px;
+    color: #686868;
+}
+
+#introduce>h4{
+    color: #007722;
+}

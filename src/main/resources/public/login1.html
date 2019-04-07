@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="lib/bootstrap-4.1.3-dist/css/bootstrap.css" />
+
+    <script type="text/javascript" src="lib/jQuery3.2.1/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="lib/bootstrap-4.1.3-dist/js/bootstrap.js"></script>
+
+    <script src="lib/raty/jquery.raty.js"></script>
+    <link rel="stylesheet" href="lib/raty/jquery.raty.css">
+
+    <script src="js/movie.js"></script>
+    <link rel="stylesheet" href="css/movie.css">
+</head>
+<body>
+<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark ">
+    <a class="navbar-brand" href="#">MOVIE</a>
+
+    <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="#">首页 </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">分类</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link " href="#">搜索</a>
+            </li>
+        </ul>
+
+        <span class="mr-1 text-white nav-item">登录/注册</span>
+
+    </div>
+</nav>
+
+
+<main role="main" class="container">
+    <!-- 搜索 -->
+    <div name="search" class="row">
+        <form class="form-inline">
+            <div class="form-group">
+                <input type="text" placeholder="搜索电影、演员" id="search">
+            </div>
+        </form>
+    </div>
+
+    <div class="row">
+        <h2 id="movieName">title</h2>
+    </div>
+
+    <div class="row">
+        <!-- 主内容-->
+        <div class="col-9 main-content">
+            <!-- 电影信息-->
+            <div class="row">
+                <div class="col-2">
+                    <div id="movieImg"></div>
+                </div>
+
+                <div class="col-7" id="info">
+                    <label class="labelInfo">导演：<span id="director"></span></label><br>
+                    <label class="labelInfo">编剧：<span id="screenwriter"></span></label><br>
+                    <label class="labelInfo">演员：<span id="actor"></span></label><br>
+                    <label class="labelInfo">类型：<span id="type"></span></label><br>
+                    <label class="labelInfo">国家/地区：<span id="nation"></span></label><br>
+                    <label class="labelInfo">语言：<span id="language"></span></label><br>
+                    <label class="labelInfo">上映日期：<span id="releaseDate"></span></label><br>
+                    <label class="labelInfo">片长：<span id="length"></span></label><br>
+                    <label class="labelInfo">又名：<span id="alias"></span></label><br>
+
+                </div>
+                <!-- 评分-->
+                <div class="col-3 left-border"style="background-color: #bd2130">
+                    <!-- 平均分 -->
+                    <div class="row">
+                        <div class="col-4">
+                            <label id="avg_rating">0.0</label>
+                        </div>
+                        <div class="col-8 left-border">
+                            <div id="star_avg" data-num="0">
+                        </div>
+                    </div>
+                    <br>
+                    <!-- 百分比 -->
+                    <div class="col">
+                        <label class="labelStar">5星</label><div></div><br>
+                        <label class="labelStar">5星</label><div></div><br>
+                        <label class="labelStar">5星</label><div></div><br>
+                        <label class="labelStar">5星</label><div></div><br>
+                        <label class="labelStar">5星</label><div></div><br>
+                    </div>
+                </div>
+            </div>
+            </div>
+            <!-- 剧情介绍 -->
+            <div class="row" >
+                <div class="col" id="introduce">
+                    <h4>title剧情介绍</h4>
+                    <p>balabala</p>
+                </div>
+
+            </div>
+
+            <!-- 我的评分 -->
+            <div class="row" >
+                <div id="myrating" data-num="0"></div>
+            </div>
+
+            <!-- 评论与影评-->
+            <div class="row">
+            </div>
+        </div>
+
+        <!-- 侧边栏推荐内容 -->
+        <div class="col-3 side-content" style="background-color: #0b2e13">
+        </div>
+    </div>
+
+
+
+</main>
+</body>
+</html>
