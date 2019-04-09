@@ -22,46 +22,61 @@ $(document).ready(function(){
         $("#userNavMenu").hide()
         $("#loginTip").show()
     }
-    var ratingPage =1;
+    var latestPageCurr =1;
     var pageSize = 8;
-
+    var ratingPageCurr = 1;
     //加载高分电影
-    $.ajax({
-        type:"get",
-        url:"/movie/list?"+"key=rating&page="+ratingPage+"&size="+pageSize,
-        contentType:"application/json",
-        success:function (res) {
-            if(res.code == 0){
-                var index = 0
-                for(var i in res.data){
-                    var text = '<div class="col col-3 movie-item" id="rating_list_'+i+
-                        '"> <a href="/movie.html?'+res.data[i].movieId+'"><img class="movie-img" src="/movie/img/'+res.data[i].posterImgPath+'"> <div class="movie-info "><p>'
-                    +res.data[i].name+'<strong>'+res.data[i].avgRating.toFixed(1)+'</strong></p></div></a></div>'
-
-                    $("#rating_list_div").append(text)
-                }
-            }
-        }
-    })
+    loadMovieList("rating",1,8)
+    // $.ajax({
+    //     type:"get",
+    //     url:"/movie/list?"+"key=rating&page="+ratingPage+"&size="+pageSize,
+    //     contentType:"application/json",
+    //     success:function (res) {
+    //         if(res.code == 0){
+    //             var index = 0
+    //             for(var i in res.data){
+    //                 var text = '<div class="col col-3 movie-item" id="rating_list_'+i+
+    //                     '"> <a href="/movie.html?'+res.data[i].movieId+'"><img class="movie-img" src="/movie/img/'+res.data[i].posterImgPath+'"> <div class="movie-info "><p>'
+    //                 +res.data[i].name+'<strong>'+res.data[i].avgRating.toFixed(1)+'</strong></p></div></a></div>'
+    //
+    //                 $("#rating_list_div").append(text)
+    //             }
+    //         }
+    //     }
+    // })
 
     //加载最新电影
-    $.ajax({
-        type:"get",
-        url:"/movie/list?"+"key=latest&page="+ratingPage+"&size="+pageSize,
-        contentType:"application/json",
-        success:function (res) {
-            if(res.code == 0){
-                var index = 0
-                for(var i in res.data){
-                    var text = '<div class="col col-3 movie-item" id="latest_list_'+i+
-                        '"><a href="/movie.html?'+res.data[i].movieId+'"><img class="movie-img" src="/movie/img/'+res.data[i].posterImgPath+'"> <div class="movie-info "><p>'
-                        +res.data[i].name+'<strong>'+res.data[i].avgRating.toFixed(1)+'</strong></p></div></a> </div>'
+    loadMovieList("latest",1,8)
+    //电影分页
+    $(".page-link").on("click",function(){
+        var id = $(this).attr("id")
+        switch (id){
+            case "rating_pre":
 
-                    $("#latest_list_div").append(text)
-                }
-            }
+                ratingPageCurr --;
+                loadMovieList("rating",ratingPageCurr,pageSize)
+
+                break;
+            case "rating_next":
+
+                ratingPageCurr++;
+                loadMovieList("rating",ratingPageCurr,pageSize)
+                break;
+            case "latest_pre":
+
+                latestPageCurr--;
+                loadMovieList("latest",latestPageCurr,pageSize)
+                break;
+            case "latest_next":
+
+                latestPageCurr ++;
+                loadMovieList("latest",latestPageCurr,pageSize)
+                break;
+            default:
         }
+
     })
+
     $("#logout").on("click",function () {
         $.ajax({
             type:"post",
@@ -100,4 +115,43 @@ function removeCookie() {
     document.cookie = "password=";
     window.location.reload(true);
 }
+
+function loadMovieList(key,page,size) {
+
+
+    $.ajax({
+        type:"get",
+        url:"/movie/list?"+"key="+key+"&page="+page+"&size="+size,
+        contentType:"application/json",
+        success:function (res) {
+            if(res.code == 0){
+                $("#"+key+"_list_div").text('')
+                var index = 0
+                for(var i in res.data){
+                    var text = '<div class="col col-3 movie-item" id="'+key+'_list_'+i+
+                        '"> <a href="/movie.html?'+res.data[i].movieId+'"><img class="movie-img" src="/movie/img/'+res.data[i].posterImgPath+'"> <div class="movie-info "><p>'
+                        +res.data[i].name+'<strong>'+res.data[i].avgRating.toFixed(1)+'</strong></p></div></a></div>'
+
+                    $("#"+key+"_list_div").append(text)
+
+                }
+                if(page == 1){
+                    $("#"+key+"_pre").parent().attr("class","page-item disable")
+                }else{
+                    $("#"+key+"_pre").parent().attr("class","page-item")
+                }
+                if(res.data.length < size){
+                    $("#"+key+"_next").parent().attr("class","page-item disable")
+                }else{
+                    $("#"+key+"_next").parent().attr("class","page-item")
+                }
+            }
+            else if(res.code == 1){
+                $("#"+key+"_next").parent().attr("class","page-item disable")
+            }
+        }
+    })
+}
+
+
 

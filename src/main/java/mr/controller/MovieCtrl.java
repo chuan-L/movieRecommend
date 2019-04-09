@@ -5,6 +5,7 @@ import mr.entity.User;
 import mr.service.MovieService;
 import mr.utils.FileUtiles;
 import mr.utils.Result;
+import mr.vo.MovieBriefVo;
 import mr.vo.MovieVo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.util.List;
 
 /**
  * Created by LiChuan on 2019/3/24.
@@ -22,7 +24,7 @@ public class MovieCtrl {
     private MovieService movieService;
 
     /*
-    获取高分列表
+    获取电影列表
      */
     @GetMapping("/movie/list")
     public Result findListByPage(@RequestParam("page") Integer page,
@@ -31,16 +33,29 @@ public class MovieCtrl {
 
 
         Result r = Result.createOkResult();
+        List<MovieBriefVo> list = null;
         switch (key) {
             case "latest":
-                r.setData(movieService.findLatestReleaseList(page, size));
+                 list = movieService.findLatestReleaseList(page, size);
                 break;
             case "rating":
-                r.setData(movieService.findRatingRankingList(page, size));
+                list = movieService.findRatingRankingList(page, size);
                 break;
             default:
                 break;
         }
+        if(list == null){
+            r.setCode(-1);
+        }
+        else if(list.size() < size){ //分页时，下一页不能点击
+            r.setCode(1);
+            r.setData(list);
+        }
+        else{
+            r.setCode(0);
+            r.setData(list);
+        }
+
         return r;
     }
     /*
@@ -153,7 +168,27 @@ public class MovieCtrl {
         }
     }
      /*
-    根据名称查找
+    根据userId 推荐
      */
+    @GetMapping("/movie/recommend/usercf/{userId}")
+    public Result UserCFRecommend(@RequestParam("page") Integer page,
+                                @RequestParam("size")Integer size,
+                                @PathVariable("userId") Integer userId){
+        //。。。
+        List<MovieBriefVo> list =  movieService.findRatingRankingList(1,10);
+        return Result.createOkResult(list);
+    }
+    /*
+    根据相似电影推荐
+     */
+    @GetMapping("/movie/recommend/itemcf/{movieId}")
+    public Result ItemCFRecommend(@RequestParam("page") Integer page,
+                                  @RequestParam("size")Integer size,
+                                  @PathVariable("movieId") Integer movieId){
+        //。。。
+        List<MovieBriefVo> list =  movieService.findRatingRankingList(1,10);
+        return Result.createOkResult(list);
+    }
+
 
 }

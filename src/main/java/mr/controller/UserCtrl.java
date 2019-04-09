@@ -21,6 +21,7 @@ public class UserCtrl {
 
     @Autowired
     private UserService userService;
+
     @PostMapping("/isLogin")
     public Result isLogin(HttpServletRequest request){
         Cookie[] cookies = request.getCookies();
@@ -68,7 +69,7 @@ public class UserCtrl {
      */
     @PostMapping("/register")
     public Result register(@RequestBody RegisterForm rform,HttpServletRequest request){
-        System.out.println(rform.toString());
+
         //检查格式
         //是否已经存在
         Integer userId = userService.findIdByTele(rform.getTelephone());
@@ -120,7 +121,9 @@ public class UserCtrl {
             return Result.createErrorResult();
         }
 
+
     }
+
 
 
 

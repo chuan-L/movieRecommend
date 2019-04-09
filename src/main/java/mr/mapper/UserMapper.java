@@ -4,6 +4,7 @@ import mr.entity.User;
 import mr.vo.LoginForm;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 /**
  * Created by LiChuan on 2019/3/21.
@@ -17,6 +18,9 @@ public interface UserMapper {
 
     @Select("select password from user where telephone = #{telephone} ")
     String findPswdByTele(String telephone);
+
+    @Select("select salt from user where telephone = #{telephone}")
+    String findSaltByTele(String tele);
     @Select("select * from user where user_id = #{userId} ")
     User findById(int userId);
 
@@ -25,10 +29,12 @@ public interface UserMapper {
 
     //注册 option:返回插入后的主键
     @Options(useGeneratedKeys = true,keyProperty = "userId",keyColumn = "user_id")
-    @Insert("insert into user (telephone,nick_name,password) values(#{telephone},#{nickName},#{password})")
+    @Insert("insert into user (telephone,nick_name,password,salt) " +
+            "values(#{telephone},#{nickName},#{password},#{salt})")
     Integer insertRegisterUser(@Param("telephone") String telephone,
                            @Param("nickName") String nickName,
-                           @Param("password") String password);
+                           @Param("password") String password,
+                               @Param("salt") String salt);
     //修改用户信息
     @Update("update user set nick_name = #{nickName}, password = #{password}," +
             "email = #{email},introduce = #{introduce},profile_img_path = #{profileImgPath} " +

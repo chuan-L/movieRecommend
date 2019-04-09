@@ -13,8 +13,8 @@ $(document).ready(function () {
         }else{
             $("#teleTip").text("");
         }
-        if(nickName.length < 6 || nickName.length > 16){
-            $("#nickNameTip").text( "昵称长度应在6到16之间");
+        if(nickName.length < 2 || nickName.length > 16){
+            $("#nickNameTip").text( "昵称长度应在2到16之间");
             correctFormed = false;
         }else{
             $("#nickNameTip").text("");
@@ -50,7 +50,7 @@ $(document).ready(function () {
                         if(res.code == 0){
                             sessionStorage.userId = res.data;
                             //注册成功转到首页
-                            window.location.href="./index.html";
+                            window.location.href="./login.html";
                         }
                         else{
                             //注册失败

@@ -7,6 +7,10 @@ import mr.vo.LoginForm;
 import mr.vo.RegisterForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.DigestUtils;
+
+import java.security.SecureRandom;
+import java.security.Security;
 
 /**
  * Created by LiChuan on 2019/3/21.
@@ -20,27 +24,44 @@ public class UserService {
     注册
      */
     public Integer register(RegisterForm rform){
-       return  userMapper.insertRegisterUser(rform.getTelephone(),rform.getNickName(),rform.getPassword());
+        try {
+            SecureRandom random = SecureRandom.getInstance("SHA1PRNG");
+            String salt = ""+random.nextInt();
+
+            String p = rform.getPassword()+salt;
+            String pswd = DigestUtils.md5DigestAsHex(p.getBytes());
+
+            return  userMapper.insertRegisterUser(rform.getTelephone(),rform.getNickName(),pswd,salt);
+        }catch (Exception e){
+            e.printStackTrace();
+            return -1;
+        }
+
+
     }
     /*
     登录
      */
-    public boolean login(LoginForm loginForm) throws Exception{
-        //存在用户
-        String pswd = userMapper.findPswdByTele(loginForm.getTelephone());
+    public void login(LoginForm loginForm) throws Exception{
+        String salt = userMapper.findSaltByTele(loginForm.getTelephone());
 
-        //用户密码正确
-        Integer id  = userMapper.findIdByTeleAndPswd(loginForm);
         //不存在
-        if(pswd == null || pswd.isEmpty() ){
+        if(salt == null || salt.isEmpty() ){
             throw new NotFoundException("账号不存在！");
-        }//密码正确
-        else if(pswd.equals(loginForm.getPassword())){
-            return true;
-        }//密码不正确
-        else{
-            throw new Exception("密码不正确!");
         }
+        //存在用户
+        else{
+
+            String p = loginForm.getPassword()+salt;
+            String pswd = DigestUtils.md5DigestAsHex(p.getBytes());
+
+            if(pswd.equals(userMapper.findPswdByTele(loginForm.getTelephone()))){
+                return;
+            }else {//密码不正确
+                throw new Exception("密码不正确!");
+            }
+        }
+
 
     }
 
