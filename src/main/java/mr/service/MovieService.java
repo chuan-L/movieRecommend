@@ -6,10 +6,14 @@ import mr.exception.ParamErrException;
 import mr.mapper.MovieMapper;
 import mr.mapper.MovieTypeMapper;
 import mr.mapper.RatingMapper;
+import mr.mapper.TopicMapper;
 import mr.vo.MovieBriefVo;
+import mr.vo.MovieTopicVo;
 import mr.vo.MovieVo;
+import mr.vo.SearchVo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -28,6 +32,30 @@ public class MovieService {
     private MovieTypeMapper movieTypeMapper;
     @Autowired
     private RatingMapper ratingMapper;
+
+    @Autowired
+    private TopicMapper topicMapper;
+
+
+
+    /*
+    搜索
+     */
+    public List<SearchVo> search(String key,int page,int size){
+        Map<String,Object> data = new HashMap<>(3);
+        data.put("currPage",page);
+        data.put("pageSize",size);
+        data.put("name",key);
+        List<SearchVo> list =  movieMapper.searchByNameByPage(data);
+        for(SearchVo item : list){
+            String ts = "";
+            for(String s:item.getTypeIds().split("/")){
+                 ts =ts+ "/"+ movieTypeMapper.findNameById(Integer.parseInt(s.trim()));
+            }
+            item.setTypeName(ts.substring(1));
+        }
+        return list;
+    }
     /*
     查找
      */
@@ -172,5 +200,28 @@ public class MovieService {
      */
     public Integer findRating(Integer userId,Integer movieId){
         return ratingMapper.findByUserAndMovieId(userId,movieId);
+    }
+
+    /*
+    根据topic找电影
+     */
+    public MovieTopicVo findByTopicId(Integer topicId){
+
+        Integer movieId = topicMapper.findMovieIdByTopicId(topicId);
+        Movie movie = movieMapper.findById(movieId);
+        MovieTopicVo vo = new MovieTopicVo();
+        BeanUtils.copyProperties(movie,vo);
+        //平均分
+        float rating = (movie.getStar1()*2+movie.getStar2()*4+movie.getStar3()*6+movie.getStar4()*8+movie.getStar5()*10)/movie.getRatingPeople();
+        vo.setAvgRating(rating);
+        //电影类型
+        String types ="";
+        for(String id: movie.getTypeIds().split("/")){
+            types+= "/"+movieTypeMapper.findNameById(Integer.parseInt(id.trim()));
+        }
+        types = types.substring(1);
+        vo.setType(types);
+
+        return vo;
     }
 }

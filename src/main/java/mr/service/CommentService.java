@@ -2,6 +2,7 @@ package mr.service;
 
 import mr.entity.Comment;
 import mr.mapper.CommentMapper;
+import mr.vo.CommentForm;
 import mr.vo.CommentVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,5 +40,18 @@ public class CommentService {
      */
     public Integer addCommentLike(Integer movieId,Integer userId){
         return commentMapper.addLike(movieId,userId);
+    }
+
+    /*
+    添加评论
+     */
+    public Integer addComment(CommentForm commentForm){
+        //是否已经评论过
+        if(commentMapper.findByUserIdAndMovieId(commentForm.getUserId(),commentForm.getMovieId()) == null){
+            return commentMapper.insert(commentForm);
+        }
+        else{
+            return -1;
+        }
     }
 }

@@ -2,6 +2,7 @@ package mr.mapper;
 
 import mr.entity.Movie;
 import mr.vo.MovieBriefVo;
+import mr.vo.SearchVo;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Component;
 
@@ -16,12 +17,18 @@ public interface MovieMapper {
     //查找
     @Select("select * from movie where movie_id = #{movieId} ")
     Movie findById(Integer movieId);
+    //搜索 movieId;
 
+    @Select("select name,nation,language,director,actor,screenwriter," +
+            "release_date, poster_img_path, rating_people,type_ids, " +
+            "(star1+star2*2+star3*3+star4*4+star5*5)*2/rating_people as rating_avg " +
+            "from movie where name like '%${name}%' ")
+    List<SearchVo> searchByNameByPage(Map<String,Object> data);
     //根据电影名查找
-    @Select("select * from movie where name like '%#{name}% ")
+    @Select("select * from movie where name like %#{name}% ")
     List<Movie> findListByName(String name);
     //根据导演名查找
-    @Select("select * from movie where director like '%#{director}% ")
+    @Select("select * from movie where director like %#{director}% ")
     List<Movie> findListByDirector(String director);
     //根据电影名和导演名查id
     @Select("select movie_id from movie where director = #{director} and name = #{name}")
@@ -52,6 +59,7 @@ public interface MovieMapper {
 
     @Select("select name from movie ")
     List<String> findNameByPage(Map<String,Object> data);
+
 
     /*
     评分

@@ -2,6 +2,7 @@ package mr.controller;
 
 import mr.service.CommentService;
 import mr.utils.Result;
+import mr.vo.CommentForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -51,6 +52,21 @@ public class CommentCtrl {
     public Result findLatestByPage(@RequestParam("movieId")Integer movieId,
                                    @RequestParam("userId")Integer userId){
         return Result.createOkResult(commentService.addCommentLike(movieId,userId));
+    }
+
+    /*
+    添加评论
+     */
+    @PostMapping("/comment/add")
+    public Result addComment(@RequestBody CommentForm commentForm){
+
+        Integer r =  commentService.addComment(commentForm);
+        if(r == 1){
+            return Result.createOkResult();
+        }else{
+            return Result.createErrorResult();
+        }
+
     }
 
 }

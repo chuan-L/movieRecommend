@@ -1,6 +1,9 @@
 package mr.mapper;
 
+import mr.entity.Comment;
+import mr.vo.CommentForm;
 import mr.vo.CommentVo;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
@@ -37,4 +40,12 @@ public interface CommentMapper {
     @Update("update comment set like_number = like_number+1 " +
             "where movie_id = #{movieId} and user_id = #{userId} ")
     Integer addLike(@Param("movieId") Integer movieId,@Param("userId") Integer userId);
+    //添加评论
+    @Insert("insert into comment (user_id,movie_id,content) " +
+            "values(#{userId},#{movieId},#{content} ) ")
+    Integer insert(CommentForm commentForm);
+
+    //根据user和movie查找
+    @Select("select * from comment where user_id = #{userId} and movie_id = #{movieId}")
+    Comment findByUserIdAndMovieId(@Param("userId")Integer userId,@Param("movieId")Integer movieId);
 }

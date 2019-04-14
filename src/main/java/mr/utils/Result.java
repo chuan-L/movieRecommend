@@ -39,6 +39,9 @@ public class Result {
         this.code = code;
     }
 
+    public static Result createResult(int code){
+        return new Result(null,null,code);
+    }
     public static Result createOkResult(Object data){
         return new Result(data,"ok",0);
     }

@@ -7,6 +7,7 @@ import mr.utils.FileUtiles;
 import mr.utils.Result;
 import mr.vo.MovieBriefVo;
 import mr.vo.MovieVo;
+import mr.vo.SearchVo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -189,6 +190,26 @@ public class MovieCtrl {
         List<MovieBriefVo> list =  movieService.findRatingRankingList(1,10);
         return Result.createOkResult(list);
     }
+    /*
+    根据话题找电影
+     */
+    @GetMapping("/movie/topic/{topicId}")
+    public Result findByTopic(@PathVariable("topicId") Integer topicId){
 
+        return Result.createOkResult(movieService.findByTopicId(topicId));
+
+    }
+    /*
+    搜索
+     */
+    @GetMapping("/movie/search")
+    public Result search(@RequestParam ("key") String key,
+                         @RequestParam("page") Integer page,
+                         @RequestParam("size") Integer size){
+
+        //
+        List<SearchVo> list = movieService.search(key,page,size);
+        return Result.createOkResult(list);
+    }
 
 }

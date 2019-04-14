@@ -42,6 +42,10 @@ main{
     color: #686868;
 }
 
-#introduce>h4{
+h4{
     color: #007722;
+}
+textarea{
+    width:466px;
+    height:120px;
 }
